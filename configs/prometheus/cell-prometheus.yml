@@ -1,0 +1,56 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+external_labels:
+  dc: dc1
+  cell: c07
+  replica: cell-a
+
+rule_files:
+  - rules/gpu_thermal_rollups.yml
+
+scrape_configs:
+  - job_name: node
+    scrape_interval: 30s
+    file_sd_configs:
+      - files: [targets/node_targets.json]
+
+  - job_name: dcgm
+    scrape_interval: 15s
+    file_sd_configs:
+      - files: [targets/dcgm_targets.json]
+
+  - job_name: ipmi
+    scrape_interval: 60s
+    metrics_path: /ipmi
+    params:
+      module: [default]
+    file_sd_configs:
+      - files: [targets/bmc_targets.json]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: bmc
+      - target_label: __address__
+        replacement: ipmi-cell-a.obsv.local:9290
+
+  - job_name: snmp
+    scrape_interval: 30s
+    metrics_path: /snmp
+    params:
+      auth: [snmpv3_main]
+      module: [if_mib]
+    file_sd_configs:
+      - files: [targets/snmp_targets.json]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: device
+      - target_label: __address__
+        replacement: snmp-row-12.obsv.local:9116
+
+remote_write:
+  - url: https://mimir.example.internal/api/v1/push

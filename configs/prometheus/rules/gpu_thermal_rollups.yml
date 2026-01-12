@@ -1,0 +1,8 @@
+groups:
+- name: gpu_thermal_rollups
+  interval: 30s
+  rules:
+  - record: rack:gpu_temp_c:max_5m
+    expr: max by (dc, row, rack) (max_over_time(DCGM_FI_DEV_GPU_TEMP[5m]))
+  - record: rack:gpu_hot_count:5m
+    expr: sum by (dc, row, rack) (max_over_time((DCGM_FI_DEV_GPU_TEMP > 85)[5m]))

@@ -1,0 +1,37 @@
+[Unit]
+Description=Cooling Plant Prometheus Exporter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+
+Environment="LISTEN_HOST=0.0.0.0"
+Environment="LISTEN_PORT=8000"
+Environment="COOLING_API_URL=http://cooling-gateway.facility.local/api/status"
+Environment="POLL_INTERVAL=15"
+Environment="LOG_LEVEL=INFO"
+
+WorkingDirectory=/opt/cooling_exporter
+ExecStart=/opt/cooling_exporter/venv/bin/python /opt/cooling_exporter/app.py
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/cooling_exporter
+
+# Restart policy
+Restart=on-failure
+RestartSec=10s
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=cooling_exporter
+
+[Install]
+WantedBy=multi-user.target

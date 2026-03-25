@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  cooling-exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cooling_exporter
+    ports:
+      - "8000:8000"
+    environment:
+      - LISTEN_HOST=0.0.0.0
+      - LISTEN_PORT=8000
+      - POLL_INTERVAL=15
+      - LOG_LEVEL=INFO
+      # Use file-based mode for local testing
+      - COOLING_JSON_FILE=/app/sample_payload.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'local-demo'
+    dc: 'localhost'
+
+scrape_configs:
+  # Mock GPU metrics
+  - job_name: 'dcgm'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['mock-dcgm:9400']
+        labels:
+          host: 'demo-gpu-host-01'
+          rack: 'demo-rack-01'
+          cell: 'demo-cell-01'
+
+  # Cooling plant metrics
+  - job_name: 'cooling'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['cooling-exporter:8000']
+        labels:
+          facility: 'demo-datacenter'
+          zone: 'zone-a'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

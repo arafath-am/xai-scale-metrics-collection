@@ -1,0 +1,173 @@
+{
+  "dashboard": {
+    "title": "xAI-Scale GPU Datacenter Overview",
+    "tags": ["gpu", "dcgm", "cooling"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "GPU Temperatures",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "dcgm_gpu_temp",
+            "legendFormat": "GPU {{gpu}} - {{uuid}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "celsius", "label": "Temperature"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 2,
+        "title": "GPU Utilization",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "dcgm_gpu_utilization",
+            "legendFormat": "GPU {{gpu}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "percent", "label": "Utilization", "max": 100, "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 3,
+        "title": "GPU Power Usage",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "dcgm_power_usage",
+            "legendFormat": "GPU {{gpu}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "watt", "label": "Power"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 4,
+        "title": "GPU Memory Usage",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "dcgm_fb_used / 1024",
+            "legendFormat": "GPU {{gpu}} Used",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "gbytes", "label": "Memory"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Cooling Supply Air Temperature",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 16, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "cooling_supply_air_temp_celsius",
+            "legendFormat": "Unit {{unit_id}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "celsius", "label": "Temperature"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Cooling Fan Speed",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 16, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "cooling_fan_speed_rpm",
+            "legendFormat": "Unit {{unit_id}}",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {"format": "rpm", "label": "Fan Speed"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Total GPU Power Consumption",
+        "type": "singlestat",
+        "gridPos": {"x": 0, "y": 24, "w": 6, "h": 4},
+        "targets": [
+          {
+            "expr": "sum(dcgm_power_usage)",
+            "refId": "A"
+          }
+        ],
+        "format": "watt",
+        "valueName": "current"
+      },
+      {
+        "id": 8,
+        "title": "Average GPU Temperature",
+        "type": "singlestat",
+        "gridPos": {"x": 6, "y": 24, "w": 6, "h": 4},
+        "targets": [
+          {
+            "expr": "avg(dcgm_gpu_temp)",
+            "refId": "A"
+          }
+        ],
+        "format": "celsius",
+        "valueName": "current"
+      },
+      {
+        "id": 9,
+        "title": "Average GPU Utilization",
+        "type": "singlestat",
+        "gridPos": {"x": 12, "y": 24, "w": 6, "h": 4},
+        "targets": [
+          {
+            "expr": "avg(dcgm_gpu_utilization)",
+            "refId": "A"
+          }
+        ],
+        "format": "percent",
+        "valueName": "current"
+      },
+      {
+        "id": 10,
+        "title": "Cooling Alarms",
+        "type": "singlestat",
+        "gridPos": {"x": 18, "y": 24, "w": 6, "h": 4},
+        "targets": [
+          {
+            "expr": "sum(cooling_unit_alarm)",
+            "refId": "A"
+          }
+        ],
+        "format": "none",
+        "valueName": "current",
+        "colorBackground": true,
+        "thresholds": "1,2"
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 16,
+    "version": 1
+  },
+  "overwrite": true
+}

@@ -1,0 +1,15 @@
+# Language detection for GitHub
+*.py linguist-language=Python
+*.yml linguist-language=YAML
+*.yaml linguist-language=YAML
+*.md linguist-documentation
+docker-compose.yml linguist-language=YAML
+Dockerfile linguist-language=Dockerfile
+*.json linguist-language=JSON
+
+# Line ending normalization
+* text=auto
+*.py text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

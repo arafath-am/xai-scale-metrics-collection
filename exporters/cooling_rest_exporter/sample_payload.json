@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-05T00:00:00Z",
+  "units": {
+    "CRAC-12A": {
+      "supply_air_temp_c": 17.2,
+      "return_air_temp_c": 24.7,
+      "fan_rpm": 1820,
+      "alarm": 0
+    },
+    "CRAC-12B": {
+      "supply_air_temp_c": 17.0,
+      "return_air_temp_c": 25.1,
+      "fan_rpm": 1760,
+      "alarm": 0
+    }
+  }
+}
